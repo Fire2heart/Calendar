@@ -1,34 +1,34 @@
 'use strict';
 
-function createCalendar(elem, year, month) {
+const createCalendar = (elem, year, month) => {
 
   let mon = month - 1; // месяцы в JS идут от 0 до 11, а не от 1 до 12
-  let d = new Date(year, mon);
+  let date = new Date(year, mon);
 
   let table = '<table><tr><th>пн</th><th>вт</th><th>ср</th><th>чт</th><th>пт</th><th>сб</th><th>вс</th></tr><tr>';
 
   // пробелы для первого ряда
   // с понедельника до первого дня месяца
-  // * * * 1  2  3  4
-  for (let i = 0; i < getDay(d); i++) {
+  // * * * * * 1  2  3  4
+  for (let i = 0; i < getDay(date); i++) {
     table += '<td></td>';
   }
 
   // <td> ячейки календаря с датами
-  while (d.getMonth() == mon) {
-    table += '<td>' + d.getDate() + '</td>';
+  while (date.getMonth() === mon) {
+    table += '<td>' + date.getDate() + '</td>';
 
-    if (getDay(d) % 7 == 6) { // вс, последний день - перевод строки
+    if (getDay(date) % 7 === 6) { // вс, последний день - перевод строки
       table += '</tr><tr>';
     }
 
-    d.setDate(d.getDate() + 1);
+    date.setDate(date.getDate() + 1);
   }
 
   // добить таблицу пустыми ячейками, если нужно
   // 29 30 31 * * * *
-  if (getDay(d) != 0) {
-    for (let i = getDay(d); i < 7; i++) {
+  if (getDay(date) != 0) {
+    for (let i = getDay(date); i < 7; i++) {
       table += '<td></td>';
     }
   }
@@ -39,9 +39,9 @@ function createCalendar(elem, year, month) {
   elem.innerHTML = table;
 }
 
-function getDay(date) { // получить номер дня недели, от 0 (пн) до 6 (вс)
+const getDay = (date) => { // получить номер дня недели, от 0 (пн) до 6 (вс)
   let day = date.getDay();
-  if (day == 0) day = 7; // сделать воскресенье (0) последним днем
+  if (day === 0) day = 7; // сделать воскресенье (0) последним днем
   return day - 1;
 }
 
